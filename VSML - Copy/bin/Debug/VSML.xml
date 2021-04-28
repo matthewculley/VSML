@@ -1,0 +1,199 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>VSML</name>
+    </assembly>
+    <members>
+        <member name="M:VSML.VsmlReader.#ctor">
+            <summary>
+            Initialises a new VSML object to parse vsml files and provide outputs to other file types
+            </summary>
+        </member>
+        <member name="M:VSML.VsmlReader.VsmlToXml(System.String)">
+            <summary>
+            Takes a vsml string input and creates a corresponding xml file
+            The Xml is saved to the VSML object's attributes
+            </summary>
+            <param name="input">The vsml string to be converted</param>
+            <param name="fileName">The location that the XML file will be stored in</param>
+            <returns>
+            Tuple, item 1 - wether the Document is valid or not, item 2 - the line number and 
+            error message of any errors in the xml file. (not the input string)
+            </returns>
+        </member>
+        <member name="M:VSML.VsmlReader.AddListTags(System.Xml.XmlDocument)">
+            <summary>
+            Adds the neccessary list tags to the xml Document 
+            </summary>
+            <param name="doc">The xml Document to add list tags too</param>
+            <returns>
+            The same xml Document, but with extra list nodes added 
+            around each set of list items
+            </returns>
+        </member>
+        <member name="M:VSML.VsmlReader.NumberLists(System.Xml.XmlDocument)">
+            <summary>
+            Adds a unique listId to each list in the Document
+            </summary>
+            <param name="doc">The Document to number the lists in</param>
+        </member>
+        <member name="M:VSML.VsmlReader.CreateStringList(System.String)">
+            <summary>
+            Takes a string input and creates an array of strings for each character
+            in the given input. The array stores a string code representing the effects 
+            that are applied to the character at the corresponding index of the string input
+            A second string[] is returned in the list, representing the colour at each index
+            A second array stores the colour for each character
+            </summary>
+            <param name="line">The line to return the characteristics for</param>
+            <returns>
+            List of string arrays, each array represents a different set of effects on the text
+            The first array corresponds to the effects on the text e.g. bold, italic etc.
+            The second corresponds to the colour of the text
+            A List is used so further attributes of the text could be added in the future
+            </returns>
+        </member>
+        <member name="M:VSML.VsmlReader.DetermineType(System.String)">
+            <summary>
+            Determines the type of the given line
+            </summary>
+            <param name="line">The line to determine the type of</param>
+            <returns>The name of the type of line</returns>
+        </member>
+        <member name="M:VSML.VsmlReader.ReturnTextElement(System.String,System.Collections.Generic.List{System.String}[],System.Xml.XmlDocument)">
+            <summary>
+            Takes a line, and the list of arrays representing the attributes of each
+            character in the supplied line, and returns the equivalent list of run 
+            that correspond to the input
+            </summary>
+            <param name="line">The line to make the xml nodes from</param>
+            <param name="stringValues">the attributes of each character in the input</param>
+            <param name="doc">The doc that the nodes will be a part of</param>
+            <returns></returns>
+        </member>
+        <member name="M:VSML.VsmlWriter.InitialiseStyles">
+            <summary>
+            Adds all of the predefined styles to the list of styles 
+            </summary>
+        </member>
+        <member name="M:VSML.VsmlWriter.ToDocx(System.String)">
+            <summary>
+            Creates a .docx file from the XML stored in the XmlDocument attribute
+            </summary>
+            <param name="fileName">The location of the file to be created</param>
+            <returns>
+            Tuple, item1 is boolean, true if successfully created Document false otherwise.
+            item2 is string, containing error message if there is any.
+            </returns>
+        </member>
+        <member name="M:VSML.VsmlWriter.RemoveExtraXml(System.Xml.XmlDocument)">
+            <summary>
+            Takes the xml input and removes any nodes that are not relevant to a .docx context
+            Nodes are removed in place and their child nodes added to the parent of the removed
+            node
+            </summary>
+            <param name="doc">The xml Document to remove the nodes from</param>
+            <returns>The supplied xml Document with the nodes removed</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:VSML.VsmlWriter.RemoveUnneededXmlNodes(System.Xml.XmlNode,System.Collections.Generic.List{System.Xml.XmlNode})" -->
+        <member name="M:VSML.VsmlWriter.RecursivelyCreateWordDoc(System.Xml.XmlNode,DocumentFormat.OpenXml.Packaging.WordprocessingDocument)">
+            <summary>
+            Carries out a traversal of the XmlDocument tree, and at each node adds the 
+            suitable word docuemnt equivalent to the word Document
+            </summary>
+            <param name="root">The current root of the traversal</param>
+            <param name="document">The word docuemnt that the elements are added to</param>
+            <returns>A word Document with the root nodes information added to it</returns>
+        </member>
+        <member name="M:VSML.VsmlWriter.CreateOpenXmlElement(System.Xml.XmlNode,DocumentFormat.OpenXml.Packaging.WordprocessingDocument)">
+            <summary>
+            Create an OpenXml element from a given XmlNode
+            </summary>
+            <param name="root">The XmlNode to create an OpenXmlElement of</param>
+            <param name="document">The Document that the element will be a part of</param>
+            <returns>Element representing the supplied root element</returns>
+        </member>
+        <member name="M:VSML.VsmlWriter.AddStyleToParagraph(DocumentFormat.OpenXml.Packaging.WordprocessingDocument,System.String,System.String,DocumentFormat.OpenXml.OpenXmlElement)">
+            <summary>
+            Adds a given style to a given paragraph
+            </summary>
+            <param name="doc">The Document the paragraph is in</param>
+            <param name="styleid">the styleid that is to be added </param>
+            <param name="stylename">the name of the style to be added</param>
+            <param name="p">The paragrapg the style is to be added to</param>
+        </member>
+        <member name="M:VSML.VsmlWriter.AddNewNumbering(DocumentFormat.OpenXml.Packaging.WordprocessingDocument,System.Int32)">
+            <summary>
+            Adds a new numering part to the Document
+            </summary>
+            <param name="doc">The docuemnt the numbering part is to be added to</param>
+            <param name="numberingId">The id of the new numbering part</param>
+        </member>
+        <member name="M:VSML.VsmlWriter.ToHtml">
+            <summary>
+            Creates a html file from the string input 
+            </summary>
+            <param name="input">The string to create the file from</param>
+            <param name="title">The title of the document</param>
+            <returns></returns>
+        </member>
+        <member name="M:VSML.VsmlWriter.InorderTraversalToCreateHtml(System.Xml.XmlNode,System.String,System.String)">
+            <summary>
+            Creates the html document by traversing the xml document 
+            </summary>
+            <param name="root">The current root node of the traversal</param>
+            <param name="htmlString">The string representing the html document</param>
+            <param name="title">The title of the html document</param>
+            <returns></returns>
+        </member>
+        <member name="M:VSML.VsmlWriter.GetHtmlText(System.Xml.XmlNode,System.String)">
+            <summary>
+            Determins the relevant html tags to add to a html document for the 
+            supplied xmlnode
+            </summary>
+            <param name="root">The xml element to create the html tags for</param>
+            <returns>
+            Tuple, with the first item being the opening tag and 
+            the second being the closing tag
+            </returns>
+        </member>
+        <member name="F:VSML.VSMLProgram.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:VSML.VSMLProgram.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:VSML.VSMLProgram.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:VSML.Program.Main">
+            <summary>
+            The main entry point for the application.
+            </summary>
+        </member>
+        <member name="T:VSML.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:VSML.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:VSML.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+    </members>
+</doc>
