@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="vsml" targetNamespace="vsml" xmlns="vsml" elementFormDefault="qualified">
+ <!-- Doc -->
+    <xs:element name="doc">
+        <xs:complexType mixed="true">
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="section" type="s" maxOccurs="unbounded"/>
+            <xs:element name="paragraph" type="p" maxOccurs="unbounded"/>
+            <xs:element name="heading" type="h" maxOccurs="unbounded"/>
+            <xs:element name="page_break" maxOccurs="unbounded"/>
+            <xs:element name="list" type="l" maxOccurs="unbounded"/>
+          </xs:choice>
+        </xs:complexType>
+    </xs:element>
+
+<!-- Section -->
+    <xs:complexType name="s" mixed="true">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="paragraph" type="p" maxOccurs="unbounded"/>
+            <xs:element name="heading" type="h" maxOccurs="unbounded"/>
+            <xs:element name="page_break" maxOccurs="unbounded"/>
+            <xs:element name="list" type="l" maxOccurs="unbounded"/>
+            <xs:element name="align" type="a"/>
+        </xs:choice>
+    </xs:complexType>
+
+<!--  List -->
+    <xs:complexType name="l">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="list_type" type="lt"/>
+            <xs:element name="o_list_item" type="oli" maxOccurs="unbounded"/>
+            <xs:element name="u_list_item" type="uli" maxOccurs="unbounded"/>
+            <xs:element name="align" type="a"/>
+        </xs:choice>
+    </xs:complexType>
+
+<!-- Paragraph -->
+    <xs:complexType name="p">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="run" type="r" maxOccurs="unbounded"/>
+            <xs:element name="align" type="a"/>
+        </xs:choice>
+    </xs:complexType>
+  
+<!-- Heading -->
+    <xs:complexType name="h">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="run" type="r" maxOccurs="unbounded"/>
+            <xs:element name="weight" type="w"/>
+            <xs:element name="align" type="a"/>
+        </xs:choice>
+    </xs:complexType>
+
+<!-- Ordered List Item -->
+    <xs:complexType name="oli">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="align" type="a" maxOccurs="1"/>
+            <xs:element name="list_id" type="xs:integer"/>
+            <xs:element name="run" type="r" maxOccurs="unbounded"/>
+        </xs:choice>
+    </xs:complexType>
+
+<!-- Unordered List Item -->
+    <xs:complexType name="uli">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element name="align" type="a" maxOccurs="1"/>
+            <xs:element name="run" type="r" maxOccurs="unbounded"/>
+            <xs:element name="list_id" type="xs:integer"/>
+        </xs:choice>
+    </xs:complexType>
+
+<!-- Run -->
+    <xs:complexType name="r" mixed="true">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="bold" type="xs:string" maxOccurs="1"/>
+            <xs:element name="italic" type="xs:string" maxOccurs="1"/>
+            <xs:element name="underlined" type="xs:string" maxOccurs="1"/>
+            <xs:element name="strikethrough" type="xs:string" maxOccurs="1"/>
+            <xs:element name="colour" type="xs:string" maxOccurs="1"/>
+        </xs:choice>
+    </xs:complexType>
+
+<!-- Align -->
+    <xs:simpleType name="a">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="left|right|middle|centre"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+<!-- Colour -->
+    <xs:simpleType name="c">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="#[a-f|A-F|0-9]{6}"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+<!-- Weight -->
+    <xs:simpleType name="w">
+            <xs:restriction base="xs:int">
+                <xs:minInclusive value="1"/>
+              <xs:maxInclusive value="6"/>
+            </xs:restriction>
+    </xs:simpleType>
+
+<!-- List Type -->
+    <xs:simpleType name="lt">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="ordered|unordered"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>
+
